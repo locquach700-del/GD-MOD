@@ -35,7 +35,14 @@ jobs:
         uses: geode-sdk/build-geode-mod@main
         with:
           combine: true
-          sdk: latest
+          # "given" = build against the exact Geode version in mod.json (5.11.2, GD 2.2081).
+          # Do NOT use "latest"/"nightly": they now resolve to Geode v6 (GD 2.2091).
+          sdk: given
+          # geode-sdk/bindings main currently fails to build GD 2.2081
+          # (geode-sdk/bindings PR #1390). This pins the PR's fix to an exact commit.
+          # Remove these two lines once that PR is merged upstream.
+          bindings: vwtfafa/bindings
+          bindings-ref: c0c808828d456e54164b60a589b0edd6172b327a
           target: ${{ matrix.config.target }}
 
   package:
